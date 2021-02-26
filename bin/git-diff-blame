@@ -1,0 +1,30 @@
+#!/bin/bash
+# git diff-blame oldrev -- <path>...
+# git diff-blame oldrev newrev -- <path>...
+# https://stackoverflow.com/questions/48159532/git-blame-for-staged-files
+args=()
+oldrev='HEAD'
+newrev=''
+while [[ $# -gt 0 ]]; do
+  if [[ $1 == -* ]]; then
+    break
+  fi
+  args+=($1)
+  shift
+done
+if [[ ${#args[*]} -gt 0 ]]; then
+  oldrev=${args[0]}
+fi
+if [[ ${#args[*]} -gt 1 ]]; then
+  newrev=${args[1]}
+fi
+# echo $oldrev $newrev $*
+# https://stackoverflow.com/questions/911168/how-to-detect-if-my-shell-script-is-running-through-a-pipe
+if [[ -t 1 ]]; then
+  color=1
+else
+  color=0
+fi
+# https://stackoverflow.com/questions/23929235/multi-line-string-with-extra-space-preserved-indentation
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+git diff $oldrev $newrev $* |awk -f "$DIR/diff-blame.awk" oldrev="$oldrev" newrev="$newrev" color="$color" |less -r
