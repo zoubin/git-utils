@@ -25,10 +25,16 @@ END {
 function author() {
   name = $2
   for ( i = 3; i <= NF; i++ ) {
-    if (match($i, /^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]$/) > 0) {
-      break
+    # git blame -f
+    # Show the filename in the original commit. By default the filename is shown if there is any line that came from a file with a different name, due to rename detection.
+    if (match($i, /^\(/) > 0) {
+      name = $i
+    } else {
+      if (match($i, /^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]$/) > 0) {
+        break
+      }
+      name = name " " $i
     }
-    name = name " " $i
   }
   return substr(name, 2)
 }
