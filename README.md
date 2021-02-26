@@ -2,6 +2,7 @@
 
 ```bash
 git clone https://github.com/zoubin/git-utils.git
+cd git-utils
 echo "export PATH="'"'`pwd`"/bin:\$PATH"'"' >> ~/.bash_profile
 ```
 
