@@ -1,9 +1,29 @@
 # git-utils
 
+## Installation
 ```bash
 git clone https://github.com/zoubin/git-utils.git
 cd git-utils
 echo "export PATH="'"'`pwd`"/bin:\$PATH"'"' >> ~/.bash_profile
+```
+## git mclone
+```bash
+git mclone remote-url remote-url
+
+```
+
+## git mpull
+```bash
+git mpull repo-dir-1 repo-dir-2
+git mpull
+
+```
+
+## git mgrep
+```bash
+mrm grep -noE keywords -- -- repo-dir-1 repo-dir-2
+mrm grep -noE keywords
+
 ```
 
 ## git diff-blame
