@@ -2,14 +2,21 @@
 
 args=()
 # https://stackoverflow.com/questions/192249/how-do-i-parse-command-line-arguments-in-bash
+is_first_double_dash_handled=0
 while [[ $# -gt 0 ]]; do
   if [[ "$1" == "--" ]]; then
-    shift
-    break
+    if [[ "$is_first_double_dash_handled" -eq 1 ]]; then
+      shift
+      break
+    fi
+    is_first_double_dash_handled=1
+    if [[ "$2" != "--" ]]; then
+      args+=($1)
+    fi
   else
     args+=($1)
-    shift
   fi
+  shift
 done
 
 function realpath {
