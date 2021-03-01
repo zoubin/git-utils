@@ -6,23 +6,23 @@ git clone https://github.com/zoubin/git-utils.git
 cd git-utils
 echo "export PATH="'"'`pwd`"/bin:\$PATH"'"' >> ~/.bash_profile
 ```
-## git mclone
+## git xclone
 ```bash
-git mclone remote-url remote-url
+git xclone remote-url remote-url
 
 ```
 
-## git mpull
+## git xpull
 ```bash
-git mpull repo-dir-1 repo-dir-2
-git mpull
+git xpull repo-dir-1 repo-dir-2
+git xpull
 
 ```
 
-## git mgrep
+## git xgrep
 ```bash
-mrm grep -noE keywords -- -- repo-dir-1 repo-dir-2
-mrm grep -noE keywords
+git xgrep -noE keywords -- -- repo-dir-1 repo-dir-2
+git xgrep -noE keywords
 
 ```
 
