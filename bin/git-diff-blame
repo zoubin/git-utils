@@ -25,6 +25,4 @@ if [[ -t 1 ]]; then
 else
   color=0
 fi
-# https://stackoverflow.com/questions/23929235/multi-line-string-with-extra-space-preserved-indentation
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-git diff $oldrev $newrev $* |awk -f "$DIR/diff-blame.awk" oldrev="$oldrev" newrev="$newrev" color="$color" |less -r
+git diff $oldrev $newrev $* |gitutils-diff-blame oldrev="$oldrev" newrev="$newrev" color="$color" |less -r

@@ -1,0 +1,29 @@
+#!/bin/bash
+rev='HEAD'
+files=()
+# git blame-stat file file file -- rev
+while [[ $# -gt 0 ]]; do
+  if [[ "$1" == "--" ]]; then
+    shift
+    if [[ $# -gt 0 ]]; then
+      rev=$1
+      shift
+      break
+    fi
+  else
+    files+=($1)
+    shift
+  fi
+done
+
+if [[ ${#files[@]} -eq 0 ]]; then
+  echo 'No files specified!'
+  exit 1
+fi
+
+for file in $files
+do
+  if [[ -f $file && -r $file ]]; then
+    git blame "$rev" -- $file | gitutils-blame-author
+  fi
+done

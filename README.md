@@ -26,6 +26,38 @@ git xgrep -noE keywords
 
 ```
 
+## git blame-stat
+```bash
+git blame-stat file1 file2 -- rev
+
+```
+
+```
+git blame-stat lib/webpack.js
+5   Florent Cailhol
+11	chico
+3	  Kees Kluskens
+154	Tobias Koppers
+1	  Sean Larkin
+1	  Sergey Petushkov
+2	  Naveen Jain
+24	kingdaro
+1	  Mohsen Azimi
+```
+
+## git diff-stat
+```bash
+git diff-stat HEAD~3 HEAD~1 -- lib/
+
+```
+the first column is additions, the second deletions
+
+```
+0   1	  Will Mendes
+0	  4	  Sergey Melyukov
+78	12	Tobias Koppers
+```
+
 ## git diff-blame
 ```bash
 git diff-blame HEAD~3 HEAD~1 -- lib/
@@ -227,13 +259,3 @@ index 36e2dede..377425b2 100644
 
 ```
 
-## git diff-comitter
-```bash
-git diff-comitter HEAD~3 HEAD~1 -- lib/
-```
-
-```
-+0	-1	Will Mendes
-+0	-4	Sergey Melyukov
-+78	-12	Tobias Koppers
-```

@@ -1,0 +1,6 @@
+#!/bin/bash
+path=$1
+if [[ -L $1 ]]; then
+  path=`readlink $1`
+fi
+echo $(cd $(dirname $path); pwd)/$(basename $path);
