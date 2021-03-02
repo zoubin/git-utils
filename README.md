@@ -1,5 +1,14 @@
 # git-utils
 
+- [Installation](#installation)
+- Commands
+  - [git xclone](#git-xclone)
+  - [git xpull](#git-xpull)
+  - [git xgrep](#git-xgrep)
+  - [git blame-stat](#git-blame-stat)
+  - [git diff-stat](#git-diff-stat)
+  - [git diff-blame](#git-diff-blame)
+
 ## Installation
 ```bash
 git clone https://github.com/zoubin/git-utils.git
