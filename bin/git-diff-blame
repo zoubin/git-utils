@@ -25,4 +25,4 @@ if [[ -t 1 ]]; then
 else
   color=0
 fi
-git diff $oldrev $newrev $* |gitutils-diff-blame oldrev="$oldrev" newrev="$newrev" color="$color" |less -r
+git diff $oldrev $newrev $* |gitutils-diff-blame oldrev="$oldrev" newrev="$newrev" color="$color"
