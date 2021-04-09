@@ -2,9 +2,7 @@
 
 - [Installation](#installation)
 - Commands
-  - [git xclone](#git-xclone)
-  - [git xpull](#git-xpull)
-  - [git xgrep](#git-xgrep)
+  - [git x](#git-x)
   - [git blame-stat](#git-blame-stat)
   - [git diff-stat](#git-diff-stat)
   - [git diff-blame](#git-diff-blame)
@@ -14,24 +12,16 @@
 git clone https://github.com/zoubin/git-utils.git
 cd git-utils
 echo "export PATH="'"'`pwd`"/bin:\$PATH"'"' >> ~/.bash_profile
-```
-## git xclone
-```bash
-git xclone remote-url remote-url
 
 ```
 
-## git xpull
-```bash
-git xpull repo-dir-1 repo-dir-2
-git xpull
+## git x
+Try to execute git subcommands in multiple repositories.
 
-```
-
-## git xgrep
 ```bash
-git xgrep -noE keywords -- -- repo-dir-1 repo-dir-2
-git xgrep -noE keywords
+git x ./* pull
+git x ./* checkout master
+git x packages/* grep kewords -- src
 
 ```
 

@@ -1,8 +1,0 @@
-#!/bin/bash
-
-for remote in $*
-do
-  echo -e "\033[0;31m## \033[4m"$remote"\033[0m\033[24m"
-  git clone $remote
-done
-

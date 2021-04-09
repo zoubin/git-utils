@@ -1,0 +1,54 @@
+#!/bin/bash
+# git x <dirs...> -- clone|pull|push|grep|config|checkout
+paths=()
+# https://stackoverflow.com/questions/192249/how-do-i-parse-command-line-arguments-in-bash
+is_first_double_dash_handled=0
+while [[ "$1" != "--" ]]; do
+  paths+=($1)
+  shift
+done
+shift
+if [[ $# == 0 ]]; then
+  echo "No git subcommand specified!"
+  exit 1
+fi
+cmd=$1
+shift
+
+function realpath {
+  echo $(cd $(dirname $1); pwd)/$(basename $1);
+}
+
+function grep() {
+  path=$1
+  shift
+  slash="/"
+  escaped="\/"
+  # https://stackoverflow.com/questions/3915040/how-to-obtain-the-absolute-path-of-a-file-via-shell-bash-zsh-sh
+  # root=$(realpath $path)
+  # https://stackoverflow.com/questions/13210880/replace-one-substring-for-another-string-in-shell-script
+  # root="${root//$slash/$escaped}"
+  root="${path//$slash/$escaped}"
+  # https://stackoverflow.com/questions/2327191/preserve-colouring-after-piping-grep-to-grep
+  # https://askubuntu.com/questions/674333/how-to-pass-an-array-as-function-argument
+  git -C $path grep --color=always "$@" |sed "s/^.*/$root\/&/"
+}
+
+function fn_exists() {
+  declare -F "$1" > /dev/null;
+}
+function exec_cmd() {
+  path=$1
+  echo -e "\033[0;31m## \033[4m"$(git -C $path config --get remote.origin.url)"\033[0m\033[24m"
+  # echo "$@"
+  git -C "$@"
+}
+# echo "${paths[@]}"
+for path in "${paths[@]}"
+do
+  if [[ -d $path && -d "$path/.git" ]]; then
+    fn_exists $cmd && $cmd $path "$@" || exec_cmd $path $cmd "$@"
+    # fn_exists $cmd && echo $cmd $path "$@" || echo 111
+  fi
+done
+
