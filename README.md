@@ -19,9 +19,9 @@ echo "export PATH="'"'`pwd`"/bin:\$PATH"'"' >> ~/.bash_profile
 Try to execute git subcommands in multiple repositories.
 
 ```bash
-git x ./* pull
-git x ./* checkout master
-git x packages/* grep kewords -- src
+git x ./* -- pull
+git x ./* -- checkout master
+git x packages/* -- grep kewords -- src
 
 ```
 
