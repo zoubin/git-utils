@@ -12,8 +12,12 @@ if [[ $# == 0 ]]; then
   echo "No git subcommand specified!"
   exit 1
 fi
-cmd=$1
+sub_cmd=$1
 shift
+
+function print_meta() {
+  echo -e "\033[0;31m## $1: \033[4m$(git -C $1 config --get remote.origin.url)\033[24m\033[0m"
+}
 
 function realpath {
   echo $(cd $(dirname $1); pwd)/$(basename $1);
@@ -34,21 +38,45 @@ function grep() {
   git -C $path grep --color=always "$@" |sed "s/^.*/$root\/&/"
 }
 
-function fn_exists() {
-  declare -F "$1" > /dev/null;
-}
-function exec_cmd() {
+function del() {
   path=$1
-  echo -e "\033[0;31m## \033[4m"$(git -C $path config --get remote.origin.url)"\033[0m\033[24m"
-  # echo "$@"
-  git -C "$@"
+  shift
+  flag="-d"
+  if [[ $1 == "-D" ]]; then
+    flag=$1
+    shift
+  fi
+  if [[ $# == 0 ]]; then
+    echo "No pattern specified."
+    exit 0
+  fi
+  # git branch $flag `git branch --list "$@"`
+  print_meta $path
+  git -C $path branch $flag $(git -C $path branch --list "$@")
+  # echo `git branch --list "$@"`
 }
-# echo "${paths[@]}"
+
+function exec_native_git_cmd() {
+  path=$1
+  shift
+  print_meta $path
+  git -C $path $sub_cmd "$@"
+}
+
+function exec_custom_git_cmd() {
+  $sub_cmd "$@"
+}
+
+if [[ $(declare -F "$sub_cmd") == "" ]]; then
+  cmd="exec_native_git_cmd"
+else
+  cmd="exec_custom_git_cmd"
+fi
+
 for path in "${paths[@]}"
 do
   if [[ -d $path && -d "$path/.git" ]]; then
-    fn_exists $cmd && $cmd $path "$@" || exec_cmd $path $cmd "$@"
-    # fn_exists $cmd && echo $cmd $path "$@" || echo 111
+    $cmd $path "$@"
   fi
 done
 
