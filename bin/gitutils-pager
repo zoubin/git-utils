@@ -1,0 +1,48 @@
+#!/bin/bash
+# cmd | pager -p 80 less -r
+page_size=60
+
+while [[ $# -gt 0 ]]; do
+  if [[ $1 == -* ]]; then
+    opt=$1
+    shift
+    case $opt in
+      -p | --page-size)
+        page_size=$1
+        shift
+        ;;
+      *)
+        exit 1
+        ;;
+    esac
+  else
+    break
+  fi
+done
+
+input=()
+need_pager=0
+while IFS='$\n' read -r line; do
+  input+=($line)
+  if [[ "${#input[@]}" -gt "$page_size" ]]; then
+    need_pager=1
+    break
+  fi
+done
+
+function output() {
+  for line in ${input[@]} ; do
+    echo $line
+  done
+  if [[ "$need_pager" -eq 1 ]]; then
+    while IFS='$\n' read -r line; do
+      echo $line
+    done
+  fi
+}
+
+if [[ "$need_pager" -eq 1 ]]; then
+  output | $@
+else
+  output
+fi
