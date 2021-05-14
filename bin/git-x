@@ -49,7 +49,7 @@ function original_grep() {
 
 function grep() {
   if [[ -t 1 ]]; then
-    original_grep --color=always "$@" | gitutils-pager less -r
+    original_grep --color=always "$@" | gitutils-paginate less -r
   else
     original_grep "$@"
   fi
