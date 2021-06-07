@@ -55,6 +55,38 @@ function grep() {
   fi
 }
 
+function original_diff() {
+  for path in "${paths[@]}"
+  do
+    if [[ -d $path && -d "$path/.git" ]]; then
+      # slash="/"
+      # escaped="\/"
+      # root=$(realpath $path)
+      # root="${root//$slash/$escaped}"
+      # root="${path//$slash/$escaped}"
+      if [[ $path == "." ]]; then
+        root=""
+      else
+        root="$path:\t"
+      fi
+      git -C $path diff "$@" |awk '{ print "'$root'" $0 }'
+    fi
+  done
+  # https://stackoverflow.com/questions/3915040/how-to-obtain-the-absolute-path-of-a-file-via-shell-bash-zsh-sh
+  # https://stackoverflow.com/questions/13210880/replace-one-substring-for-another-string-in-shell-script
+  # https://stackoverflow.com/questions/911168/how-to-detect-if-my-shell-script-is-running-through-a-pipe
+  # https://stackoverflow.com/questions/2327191/preserve-colouring-after-piping-grep-to-grep
+  # https://askubuntu.com/questions/674333/how-to-pass-an-array-as-function-argument
+}
+
+function diff() {
+  if [[ -t 1 ]]; then
+    original_diff --color=always "$@" | gitutils-paginate less -r
+  else
+    original_diff "$@"
+  fi
+}
+
 function branch_del() {
   flag="-d"
   if [[ $1 == "-D" ]]; then
